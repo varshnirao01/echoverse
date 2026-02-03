@@ -1,0 +1,551 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music App | Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, white);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+    .login-container {
+      background: rgba(0, 0, 0, 0.75);
+      padding: 40px 50px;
+      border-radius: 15px;
+      width: 350px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      text-align: center;
+    }
+    .login-container h2 {
+      margin-bottom: 25px;
+      color: #1db954;
+      font-size: 28px;
+      font-weight: 600;
+    }
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    label {
+      font-size: 14px;
+      display: block;
+      margin-bottom: 5px;
+      color: #ccc;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #222;
+      color: #fff;
+      font-size: 14px;
+    }
+    input:focus {
+      border: 2px solid #1db954;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #1db954;
+      border: none;
+      border-radius: 25px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #17a94a;
+    }
+    p {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #ccc;
+    }
+    a {
+      color: #1db954;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>🎵 Music App Login</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <label>Username</label>
+        <input type="text" id="username" placeholder="Enter username" required />
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Enter password" required />
+      </div>
+      <button type="submit">Login</button>
+    </form>
+    <p>Forgot Password? <a href="#">Click Here</a></p>
+    <p>New user? <a href="music_register.html">Create an account</a></p>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert("Login Successful!");
+          // window.location.href = "music_dashboard.html";
+          window.location.href = "language.html";
+        } else {
+          alert(data.message);
+        }
+      } catch (err) {
+        alert("Server Error. Please try again later.");
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music App | Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg,rgb(255, 255, 255));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: black;
+    }
+    .login-container {
+      background: rgba(252, 252, 252, 0.75);
+      padding: 40px 50px;
+      border-radius: 15px;
+      width: 350px;
+      box-shadow: 0 0 20px rgba(49, 13, 230, 0.4);
+      text-align: center;
+    }
+    .login-container h2 {
+      margin-bottom: 25px;
+      color: #1db954;
+      font-size: 28px;
+      font-weight: 600;
+    }
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    label {
+      font-size: 14px;
+      display: block;
+      margin-bottom: 5px;
+      color: #ccc;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #0bb348;
+      color: whitesmoke;
+      font-size: 14px;
+    }
+    input:focus {
+      border: 2px solid #1db954;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #1db954;
+      border: none;
+      border-radius: 25px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #17a94a;
+    }
+    p {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #ccc;
+    }
+    a {
+      color: #1db954;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>🎵 Music App Login</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <label style="color: black;">Username or Email</label>
+        <input type="text" id="username" placeholder="Enter username" required />
+      </div>
+      <div class="input-group">
+        <label style="color: black;">Password</label>
+        <input type="password" id="password" placeholder="Enter password" required />
+      </div>
+      <button type="submit">Login</button>
+    </form>
+    <p>Forgot Password? <a href="#">Click Here</a></p>
+    <p>New user? <a href="music_register.html">Create an account</a></p>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert("Login Successful!");
+          window.location.href = "music_dashboard.html";
+        } else {
+          alert(data.message);
+        }
+      } catch (err) {
+        alert("Server Error. Please try again later.");
+      }
+    });
+  </script>
+</body>
+</html> 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music App Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+  <div class="login-container">
+    <h2>🎵 Music App Login</h2>
+    <input type="text" id="username" placeholder="Enter username">
+    <input type="password" id="password" placeholder="Enter password">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html> -->  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EchoVerse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #12151A;
+            color: #E6E6E6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        a {
+            color: #42d8a4;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .login-container {
+            background-color: #1A1E25;
+            border-radius: 16px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid #2a2e37;
+        }
+        .login-form {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .login-form h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
+        }
+        .login-form .subtitle {
+            color: #A0A0A0;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        .input-group {
+            margin-bottom: 1.25rem;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #C0C0C0;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background-color: #2C323C;
+            border: 1px solid #3A404C;
+            border-radius: 8px;
+            color: #FFFFFF;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .input-group input::placeholder { color: #707070; }
+        .input-group input:focus {
+            outline: none;
+            border-color: #42d8a4;
+            box-shadow: 0 0 0 3px rgba(66, 216, 164, 0.2);
+        }
+        .form-links {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+        .form-links .pro-trial {
+            color: #FFFFFF;
+            font-weight: 500;
+        }
+        .form-links .forgot-password { color: #A0A0A0; }
+        .btn {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary {
+            background-color: #42d8a4;
+            color: #12151A;
+        }
+        .btn-primary:hover { background-color: #52eec2; }
+        .btn-secondary {
+            background-color: #2C323C;
+            color: #E6E6E6;
+            border: 1px solid #3A404C;
+            margin-bottom: 0.75rem;
+        }
+        .btn-secondary:hover { background-color: #3A404C; }
+        .separator {
+            text-align: center;
+            color: #707070;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+        }
+        .signup-link {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #A0A0A0;
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+        .login-sidebar {
+            background-color: #232830;
+            padding: 3rem;
+            border-left: 1px solid #2a2e37;
+        }
+        .login-sidebar h3 {
+            font-size: 1.25rem;
+            color: #FFFFFF;
+            margin-bottom: 1.5rem;
+        }
+        .login-sidebar p {
+            color: #A0A0A0;
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+        .btn-tertiary {
+            display: inline-block;
+            background-color: #2C323C;
+            color: #E6E6E6;
+            border: 1px solid #3A404C;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+        .btn-tertiary:hover {
+            background-color: #3A404C;
+            text-decoration: none;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .login-container {
+                grid-template-columns: 1fr; /* Stack columns */
+                max-width: 450px;
+            }
+            .login-sidebar {
+                display: none; /* Hide sidebar on mobile */
+            }
+            .login-form {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="login-container">
+        <div class="login-form">
+            <h2>Welcome back</h2>
+            <p class="subtitle">Log in to discover new music, upload your tracks, and earn rewards from likes.</p>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="you@example.com" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••••" required>
+                </div>
+                
+                <div class="form-links">
+                    <a href="#" class="pro-trial">Pro Trial</a>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="stroke: black; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <path d="M14 5L21 12M21 12L14 19M21 12H3"/>
+                    </svg>
+                    Continue
+                </button>
+            </form>
+            
+            <div class="separator">or</div>
+            
+            <button type="button" class="btn btn-secondary">Continue with Email Link</button>
+            <button type="button" class="btn btn-secondary">Continue with GitHub</button>
+            <button type="button" class="btn btn-secondary">Continue as Guest</button>
+            
+            <p class="signup-link">
+                New to Echoverse? <a href="register.html">Create an account</a>
+            </p>
+        </div>
+        
+        <div class="login-sidebar">
+            <h3>Why join?</h3>
+            <p>Likes you receive turn into subscription benefits and rewards.</p>
+            <p>Upload your own songs and reach new listeners.</p>
+            <p>Personalized discovery mixes updated daily.</p>
+            <p>Track progress toward Premium with every like.</p>
+            <a href="#" class="btn btn-tertiary">Secure & Private</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const username = email; // Assuming backend accepts email as username
+
+            try {
+                const res = await fetch("http://localhost:5000/api/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password }), 
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert("Login Successful!");
+                    window.location.href = "language.html"; 
+                } else {
+                    alert(data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Server Error. Please try again later.");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music App | Register</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, rgb(12, 0, 7));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+      font-family: "Poppins", sans-serif;
+    }
+    .register-container {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 40px 50px;
+      border-radius: 15px;
+      width: 350px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+    .register-container h2 {
+      color: #1db954;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    label {
+      font-size: 14px;
+      display: block;
+      margin-bottom: 5px;
+      color: #ccc;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #222;
+      color: #fff;
+    }
+    input:focus {
+      border: 2px solid #1db954;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #1db954;
+      border: none;
+      border-radius: 25px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #17a94a;
+    }
+    p {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #ccc;
+    }
+    a {
+      color: #1db954;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h2>🎶 Create Account</h2>
+    <form id="registerForm">
+      <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" id="fullname" required placeholder="Your Name" />
+      </div>
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" id="email" required placeholder="Your Email" />
+      </div>
+      <div class="input-group">
+        <label>Username</label>
+        <input type="text" id="username" required placeholder="Choose Username" />
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" required placeholder="Create Password" />
+      </div>
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="login.html">Login here</a></p>
+  </div>
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fullname = document.getElementById("fullname").value;
+      const email = document.getElementById("email").value;
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fullname, email, username, password }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert("Registration Successful!");
+          window.location.href = "login.html";
+        } else {
+          alert(data.message);
+        }
+      } catch (err) {
+        alert("Server Error. Please try again later.");
+      }
+    });
+  </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - EchoVerse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #12151A;
+            color: #E6E6E6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        a {
+            color: #42d8a4;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .register-container {
+            background-color: #1A1E25;
+            border-radius: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            max-width: 950px;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid #2a2e37;
+        }
+        .register-info {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            background-color: #232830;
+        }
+        .register-info h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 1rem;
+        }
+        .register-info p {
+            color: #A0A0A0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+        .info-image {
+            width: 100%;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 2rem;
+        }
+        .info-perks {
+            margin-top: auto;
+            font-size: 0.9rem;
+            color: #C0C0C0;
+        }
+        .info-perks p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .form-wrapper {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .form-wrapper h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
+        }
+        .login-link {
+            font-size: 0.9rem;
+            color: #A0A0A0;
+            margin-bottom: 2rem;
+        }
+        .login-link a { font-weight: 500; }
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .input-group {
+            margin-bottom: 1.25rem;
+        }
+        .input-group.full-width {
+            grid-column: 1 / -1;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #C0C0C0;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background-color: #2C323C;
+            border: 1px solid #3A404C;
+            border-radius: 8px;
+            color: #FFFFFF;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .input-group input::placeholder { color: #707070; }
+        .input-group input:focus {
+            outline: none;
+            border-color: #42d8a4;
+            box-shadow: 0 0 0 3px rgba(66, 216, 164, 0.2);
+        }
+        .policy-group {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .checkbox-group {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: #A0A0A0;
+        }
+        .checkbox-group input { margin-top: 3px; }
+        .password-req {
+            font-size: 0.875rem;
+            color: #A0A0A0;
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .btn {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary {
+            background-color: #42d8a4;
+            color: #12151A;
+            grid-column: 1 / -1;
+        }
+        .btn-primary:hover { background-color: #52eec2; }
+        .btn-social {
+            background-color: #2C323C;
+            color: #E6E6E6;
+            border: 1px solid #3A404C;
+        }
+        .btn-social:hover { background-color: #3A404C; }
+        .separator {
+            text-align: center;
+            color: #707070;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            grid-column: 1 / -1;
+        }
+        .recaptcha-text {
+            font-size: 0.75rem;
+            color: #707070;
+            grid-column: 1 / -1;
+            margin-top: 1.5rem;
+        }
+        
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .register-container {
+                grid-template-columns: 1fr; /* Stack columns */
+                max-width: 500px;
+            }
+            .register-info {
+                display: none; /* Hide info column on mobile */
+            }
+            .form-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (max-width: 500px) {
+             .input-grid {
+                grid-template-columns: 1fr; /* Single column for inputs */
+            }
+            .input-group {
+                 grid-column: 1 / -1 !important;
+            }
+            .policy-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .password-req {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="register-container">
+        <div class="register-info">
+            <h2>Create your EchoVerse</h2>
+            <p>Upload songs, get likes, and turn them into subscription rewards.</p>
+            <img src="https://i.imgur.com/gY8qfM8.jpeg" alt="Artist at mixing desk" class="info-image">
+            <div class="info-perks">
+                <p>✓ Likes convert to months</p>
+                <p>✓ Unlimited uploads</p>
+                <p>✓ Privacy-first</p>
+            </div>
+        </div>
+
+        <div class="form-wrapper">
+            <h3>Sign up</h3>
+            <p class="login-link">
+                Already have an account? <a href="login.html">Log in</a>
+            </p>
+            <form id="registerForm">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="first-name">First name</label>
+                        <input type="text" id="first-name" placeholder="Alex" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="last-name">Last name</label>
+                        <input type="text" id="last-name" placeholder="Rivera" required>
+                    </div>
+                    <div class="input-group full-width">
+                        <label for="artist-name">Artist name</label>
+                        <input type="text" id="artist-name" placeholder="Your Artist Alias" required>
+                    </div>
+                    <div class="input-group full-width">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="confirm-password">Confirm password</label>
+                        <input type="password" id="confirm-password" placeholder="••••••••" required>
+                    </div>
+                    <div class="policy-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <label for="terms">I agree to Terms and Privacy</label>
+                        </div>
+                        <span class="password-req">Password must be 8+ chars</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create account</button>
+                    <div class="separator">or</div>
+                    <button type="button" class="btn btn-social">Continue with Email</button>
+                    <button type="button" class="btn btn-social">GitHub</button>
+                    <button type="button" class="btn btn-social">Google</button>
+                    <p class="recaptcha-text">
+                        Protected by reCAPTCHA. The Google Privacy Policy and Terms of Service apply.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const firstName = document.getElementById("first-name").value;
+            const lastName = document.getElementById("last-name").value;
+            const artistName = document.getElementById("artist-name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+            if (password.length < 8) {
+                alert("Password must be at least 8 characters long.");
+                return;
+            }
+
+            const fullname = `${firstName} ${lastName}`;
+            const username = artistName; // Assuming artistName is the username
+
+            try {
+                const res = await fetch("http://localhost:5000/api/auth/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ fullname, email, username, password }),
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert("Registration Successful!");
+                    window.location.href = "login.html";
+                } else {
+                    alert(data.message || "Registration failed. Please try again.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Server Error. Please try again later.");
+            }
+        });
+    </script>
+</body>
+</html>

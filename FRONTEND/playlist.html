@@ -1,0 +1,515 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Playlists</title>
+  <style>
+    body {
+      background: #0f2027;
+      color: white;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+    h2, h3 { margin-bottom: 20px; }
+    .song {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px auto;
+      width: 60%;
+    }
+    audio {
+      width: 90%;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 25px;
+      background-color: #00c6ff;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #0096c7;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <h2>🎶 Welcome to Your Playlist</h2>
+  <h3 id="langTitle"></h3>
+  <div id="songsList"></div>
+  <button onclick="window.location.href='upload.html'">⬆️ Upload Song</button>
+
+  <script>
+    const lang = localStorage.getItem("selectedLanguage");
+    document.getElementById("langTitle").textContent = `Language: ${lang}`;
+
+    async function loadSongs() {
+      try {
+        const res = await fetch(`http://localhost:5000/api/songs/${lang}`);
+        const songs = await res.json();
+        const list = document.getElementById("songsList");
+        list.innerHTML = "";
+
+        if (songs.length === 0) {
+          list.innerHTML = "<p>No songs available for this language.</p>";
+          return;
+        }
+
+        songs.forEach(song => {
+          list.innerHTML += `
+            <div class="song">
+              <strong>${song.title}</strong> — ${song.artist}<br>
+              <audio controls src="http://localhost:5000${song.fileUrl}"></audio>
+            </div>
+          `;
+        });
+      } catch (err) {
+        console.error("Error loading songs:", err);
+      }
+    }
+
+    loadSongs();
+  </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoVerse | Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #12151A;
+        color: #E6E6E6;
+        overflow: hidden;
+    }
+    a {
+        color: #E6E6E6;
+        text-decoration: none;
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-thumb {
+        background: #2C323C;
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-track { background: transparent; }
+    .app-container {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        grid-template-rows: 60px 1fr 90px;
+        height: 100vh;
+    }
+    .app-header {
+        grid-column: 2 / -1;
+        grid-row: 1 / 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2rem;
+        background-color: #12151A;
+        border-bottom: 1px solid #2a2e37;
+    }
+    .search-bar {
+        display: flex;
+        align-items: center;
+        background-color: #2C323C;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        width: 100%;
+        max-width: 400px;
+    }
+    .search-bar input {
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #FFFFFF;
+        font-size: 0.9rem;
+        margin-left: 0.5rem;
+        width: 100%;
+    }
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .btn-premium {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #A0A0A0;
+    }
+    .btn-premium:hover { color: #FFFFFF; }
+    .profile-pic {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #3A404C;
+    }
+    .app-sidebar {
+        grid-column: 1 / 2;
+        grid-row: 1 / -1;
+        background-color: #1A1E25;
+        border-right: 1px solid #2a2e37;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+    }
+    .sidebar-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+        padding-left: 0.5rem;
+    }
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+        background-color: #42d8a4;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #12151A;
+        font-size: 1.2rem;
+    }
+    .logo-text {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #FFFFFF;
+    }
+    .sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #A0A0A0;
+        transition: all 0.2s;
+    }
+    .nav-link.active,
+    .nav-link:hover {
+        background-color: #2C323C;
+        color: #FFFFFF;
+    }
+    .nav-section-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #A0A0A0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+    }
+    .upload-section {
+        margin-top: auto;
+        border-top: 1px solid #2a2e37;
+        padding-top: 1.5rem;
+    }
+    .main-content {
+        grid-column: 2 / -1;
+        grid-row: 2 / 3;
+        overflow-y: auto;
+        padding: 2.5rem;
+    }
+    .hero-section {
+        background-color: #2C323C;
+        border-radius: 12px;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2.5rem;
+    }
+    .hero-details h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin-bottom: 0.5rem;
+    }
+    .hero-details p {
+        font-size: 1rem;
+        color: #A0A0A0;
+        margin-bottom: 1.5rem;
+    }
+    .btn-primary {
+        background-color: #42d8a4;
+        color: #12151A;
+        padding: 0.85rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .btn-primary:hover { background-color: #52eec2; }
+    .content-section h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin-bottom: 1.5rem;
+    }
+    .song-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1.5rem;
+    }
+    .song-card {
+        background-color: #1A1E25;
+        border-radius: 8px;
+        padding: 1rem;
+        transition: background-color 0.2s;
+        cursor: pointer;
+    }
+    .song-card:hover { background-color: #2C323C; }
+    .card-art {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 8px;
+        object-fit: cover;
+        margin-bottom: 1rem;
+        background-color: #2C323C;
+    }
+    .card-title {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #FFFFFF;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .card-artist {
+        font-size: 0.875rem;
+        color: #A0A0A0;
+    }
+    .music-player-bar {
+        grid-column: 1 / -1;
+        grid-row: 3 / 4;
+        background-color: #1A1E25;
+        border-top: 1px solid #2a2e37;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1rem;
+    }
+    .player-song-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex: 1;
+        min-width: 0;
+    }
+    .player-song-info img {
+        width: 56px;
+        height: 56px;
+        border-radius: 8px;
+        background-color: #3A404C;
+    }
+    .player-song-details h4 {
+        color: #FFFFFF;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .player-song-details p {
+        color: #A0A0A0;
+        font-size: 0.875rem;
+    }
+    .player-controls { 
+        color: #FFFFFF; 
+        flex: 2;
+        display: flex;
+        justify-content: center;
+    }
+    .player-controls audio {
+        width: 100%;
+        max-width: 400px;
+    }
+    .player-settings {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    /* --- Responsive Design --- */
+    @media (max-width: 768px) {
+        .app-container {
+            grid-template-columns: 1fr; /* Single column */
+            grid-template-rows: 60px 1fr 90px; /* Header, Content, Player */
+        }
+        .app-sidebar {
+            display: none; /* Hide sidebar */
+        }
+        .app-header {
+            grid-column: 1 / -1; /* Full width */
+            padding: 0 1rem;
+        }
+        .btn-premium {
+            display: none; /* Hide premium button */
+        }
+        .main-content {
+            grid-column: 1 / -1;
+            padding: 1.5rem;
+        }
+        .hero-section {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+        .hero-details h1 {
+            font-size: 1.5rem;
+        }
+        .music-player-bar {
+            padding: 0.5rem 1rem;
+            flex-direction: column;
+            justify-content: center;
+            height: auto;
+        }
+        .player-controls {
+            order: -1; /* Move player to top */
+            width: 100%;
+        }
+        .player-controls audio { max-width: 100%; }
+        .player-song-info { width: 100%; }
+        .player-settings { display: none; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+        <div class="search-bar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="stroke: #A0A0A0; stroke-width: 2; stroke-linecap: round;">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="header-right">
+            <a href="#" class="btn-premium">Pro Trial • 12 likes</a>
+            <div class="profile-pic"></div>
+        </div>
+    </header>
+    <aside class="app-sidebar">
+        <div class="sidebar-logo">
+            <span class="logo-icon">E</span>
+            <span class="logo-text">EchoVerse</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="playlist.html" class="nav-link active">Home</a>
+            <a href="#" class="nav-link">Discover</a>
+            <a href="#" class="nav-link">For You</a>
+            <a href="#" class="nav-link">Liked</a>
+        </nav>
+        <div class="nav-section-title">Genres</div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-link">Pop</a>
+            <a href="#" class="nav-link">EDM</a>
+            <a href="#" class="nav-link">Rock</a>
+            <a href="#" class="nav-link">Indie</a>
+        </nav>
+        <div class="upload-section">
+            <a href="upload.html" class="nav-link">Upload a Track</a>
+            <a href="#" class="nav-link">Rewards</a>
+        </div>
+    </aside>
+    <main class="main-content">
+        <section class="hero-section">
+            <img src="https://i.imgur.com/39JcZfV.png" alt="Daily Mix" style="width: 180px; height: 180px; border-radius: 8px;">
+            <div class="hero-details">
+                <p>Your Daily Mix</p>
+                <h1>Handpicked tracks based on your listening.</h1>
+                <p>Updated daily.</p>
+                <button class="btn-primary">Play</button>
+            </div>
+        </section>
+        <section class="content-section">
+            <h2>Songs for <span id="langTitle">Language</span></h2>
+            <div class="song-grid" id="songsList">
+                </div>
+        </section>
+    </main>
+    <footer class="music-player-bar">
+        <div class="player-song-info">
+            <img id="player-art" src="https://i.imgur.com/SOVE5Bi.png" alt="Album Art">
+            <div class="player-song-details">
+                <h4 id="player-title">Nothing playing</h4>
+                <p id="player-artist">—</p>
+            </div>
+        </div>
+        <div class="player-controls">
+            <audio id="global-audio-player" controls></audio>
+        </div>
+        <div class="player-settings" style="color: #A0A0A0;">
+            <span>Volume</span>
+        </div>
+    </footer>
+  </div>
+  <script>
+    const lang = localStorage.getItem("selectedLanguage");
+    document.getElementById("langTitle").textContent = lang;
+
+    async function loadSongs() {
+      try {
+        const res = await fetch(`http://localhost:5000/api/songs/${lang}`);
+        const songs = await res.json();
+        const list = document.getElementById("songsList");
+        list.innerHTML = "";
+        if (songs.length === 0) {
+          list.innerHTML = "<p>No songs available for this language.</p>";
+          return;
+        }
+        songs.forEach(song => {
+          const albumArtUrl = song.albumArtUrl || "https://i.imgur.com/SOVE5Bi.png";
+          const songUrl = `http://localhost:5000${song.fileUrl}`;
+          const cardHtml = `
+            <div class="song-card" 
+                 onclick="playSong('${songUrl}', '${song.title}', '${song.artist}', '${albumArtUrl}')">
+                <img src="${albumArtUrl}" alt="${song.title}" class="card-art">
+                <h4 class="card-title">${song.title}</h4>
+                <p class="card-artist">${song.artist}</p>
+            </div>
+          `;
+          list.innerHTML += cardHtml;
+        });
+      } catch (err) {
+        console.error("Error loading songs:", err);
+      }
+    }
+
+    const globalAudioPlayer = document.getElementById("global-audio-player");
+    function playSong(songUrl, title, artist, artUrl) {
+        document.getElementById("player-title").innerText = title;
+        document.getElementById("player-artist").innerText = artist;
+        document.getElementById("player-art").src = artUrl;
+        globalAudioPlayer.src = songUrl;
+        globalAudioPlayer.play();
+    }
+    loadSongs();
+  </script>
+</body>
+</html>

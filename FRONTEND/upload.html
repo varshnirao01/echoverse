@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload - EchoVerse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #12151A;
+            color: #E6E6E6;
+        }
+        a {
+            color: #E6E6E6;
+            text-decoration: none;
+        }
+        .app-container {
+            display: grid;
+            grid-template-rows: 60px 1fr 90px;
+            height: 100vh;
+        }
+        /* --- Header --- */
+        .app-header {
+            background-color: #1A1E25;
+            border-bottom: 1px solid #2a2e37;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #42d8a4;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #12151A;
+            font-size: 1.2rem;
+        }
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+        }
+        .header-nav a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #A0A0A0;
+            transition: color 0.2s;
+        }
+        .header-nav a.active,
+        .header-nav a:hover { color: #FFFFFF; }
+        .header-profile {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .btn-join {
+            background-color: #42d8a4;
+            color: #12151A;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+        .btn-join:hover { background-color: #52eec2; }
+        .profile-pic {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #3A404C;
+        }
+        
+        /* --- Main Content --- */
+        .main-content {
+            padding: 4rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow-y: auto;
+        }
+        .main-content h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
+        }
+        .main-content p {
+            color: #A0A0A0;
+            font-size: 0.95rem;
+            margin-bottom: 2.5rem;
+        }
+        .upload-form {
+            background-color: #1A1E25;
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid #2a2e37;
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #C0C0C0;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background-color: #2C323C;
+            border: 1px solid #3A404C;
+            border-radius: 8px;
+            color: #FFFFFF;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .drop-zone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 150px;
+            background-color: #2C323C;
+            border: 2px dashed #3A404C;
+            border-radius: 8px;
+            color: #A0A0A0;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            text-align: center;
+            padding: 1rem;
+        }
+        .drop-zone:hover {
+            background-color: #3A404C;
+            border-color: #42d8a4;
+        }
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .btn {
+            padding: 0.85rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary {
+            background-color: #42d8a4;
+            color: #12151A;
+        }
+        .btn-primary:hover { background-color: #52eec2; }
+        .btn-secondary {
+            background-color: #2C323C;
+            color: #E6E6E6;
+            border: 1px solid #3A404C;
+        }
+        .btn-secondary:hover { background-color: #3A404C; }
+        
+        /* --- Player --- */
+        .music-player-bar {
+            background-color: #1A1E25;
+            border-top: 1px solid #2a2e37;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1rem;
+            color: #A0A0A0;
+        }
+        .player-song-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .player-song-info img {
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
+            background-color: #3A404C;
+        }
+        .player-song-details h4 {
+            color: #FFFFFF;
+            font-weight: 500;
+        }
+        .player-song-details p {
+            color: #A0A0A0;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .app-header {
+                padding: 0 1rem;
+            }
+            .header-nav, .btn-join {
+                display: none; /* Hide nav and join button */
+            }
+            .main-content {
+                padding: 2rem 1rem;
+            }
+            .upload-form {
+                padding: 1.5rem;
+            }
+            .form-buttons {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+            }
+            .music-player-bar {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-logo">
+                <span class="logo-icon">E</span>
+                <span class="logo-text">EchoVerse</span>
+            </div>
+            <nav class="header-nav">
+                <a href="playlist.html">Home</a>
+                <a href="#">Browse</a>
+                <a href="#">My Library</a>
+                <a href="upload.html" class="active">Upload</a>
+            </nav>
+            <div class="header-profile">
+                <a href="#" class="btn-join">Join & start earning</a>
+                <div class="profile-pic"></div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <h2>Upload a song</h2>
+            <p>Provide just the essentials: song, artist, and file.</p>
+            
+            <form id="uploadForm" class="upload-form">
+                <div class="input-group">
+                    <label for="song-title">Song title</label>
+                    <input type="text" id="song-title" placeholder="Your Song" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="artist-name">Artist</label>
+                    <input type="text" id="artist-name" placeholder="Artist Name" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="audio-file">Upload audio file</label>
+                    <div class="drop-zone" id="drop-zone">
+                        Drag & drop your file here or click to choose
+                    </div>
+                    <input type="file" id="audio-file" accept="audio/*" style="display: none;" required>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                    <button type="button" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </main>
+        
+        <footer class="music-player-bar">
+            <div class="player-song-info">
+                <img src="https://i.imgur.com/SOVE5Bi.png" alt="Album Art">
+                <div class="player-song-details">
+                    <h4>Nothing playing</h4>
+                    <p>—</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('audio-file');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#42d8a4';
+        });
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#3A404C';
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#3A404C';
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                dropZone.textContent = files[0].name;
+            }
+        });
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                dropZone.textContent = fileInput.files[0].name;
+            }
+        });
+
+        document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const title = document.getElementById("song-title").value;
+            const artist = document.getElementById("artist-name").value;
+            const file = document.getElementById("audio-file").files[0];
+            
+            if (!file) {
+                alert("Please select an audio file to upload.");
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("artist", artist);
+            formData.append("audioFile", file);
+            
+            const UPLOAD_ENDPOINT = "http://localhost:5000/api/upload"; // Change this
+
+            try {
+                /*
+                // Uncomment this when your backend is ready
+                const res = await fetch(UPLOAD_ENDPOINT, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (res.ok) {
+                    alert("Upload successful!");
+                    window.location.href = "music.html"; // Redirect to dashboard
+                } else {
+                    const data = await res.json();
+                    alert(data.message || "Upload failed.");
+                }
+                */
+                
+                alert(`(TEST) Uploading: ${title} by ${artist}`);
+                console.log("Form data to send:", { title, artist, file });
+                
+            } catch (err) {
+                console.error(err);
+                alert("Server error during upload. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>

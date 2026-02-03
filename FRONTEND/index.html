@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Web App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🎵 Music Web App</h1>
+  </header>
+
+  <main>
+    <section class="player">
+      <audio id="audioPlayer" controls>
+        <source src="" type="audio/mp3">
+      </audio>
+
+      <div class="disk">
+        <img src="disk.png" alt="Disk" id="diskImage">
+      </div>
+
+      <div class="speed-controls">
+        <button onclick="changeSpeed(0.5)">0.5x</button>
+        <button onclick="changeSpeed(1)">1x</button>
+        <button onclick="changeSpeed(1.5)">1.5x</button>
+        <button onclick="changeSpeed(2)">2x</button>
+      </div>
+    </section>
+
+    <section class="likes">
+      <h2>🔥 Uploaded Songs</h2>
+      <div id="uploadsContainer"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

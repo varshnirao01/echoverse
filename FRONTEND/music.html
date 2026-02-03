@@ -1,0 +1,484 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Music List</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Welcome, <span id="user"></span> 🎶</h2>
+  <button onclick="window.location.href='upload.html'">Go to Upload Page</button>
+  <div id="songsList"></div>
+
+  <script>
+    document.getElementById("user").innerText = localStorage.getItem("username");
+    async function loadSongs() {
+      const res = await fetch("http://localhost:5000/api/uploads");
+      const songs = await res.json();
+      const div = document.getElementById("songsList");
+      div.innerHTML = "";
+      songs.forEach(song => {
+        div.innerHTML += `
+          <div>
+            <p><b>${song.title}</b> (Likes: ${song.likes})</p>
+            <audio controls src="http://localhost:5000${song.fileUrl}"></audio><br>
+            <button onclick="likeSong('${song._id}')">❤️ Like</button>
+          </div><hr>`;
+      });
+    }
+
+    async function likeSong(id) {
+      await fetch(`http://localhost:5000/api/uploads/${id}/like`, { method: "PUT" });
+      loadSongs();
+    }
+
+    loadSongs();
+  </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - EchoVerse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #12151A;
+        color: #E6E6E6;
+        overflow: hidden;
+    }
+    a {
+        color: #E6E6E6;
+        text-decoration: none;
+    }
+    .app-container {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        grid-template-rows: 60px 1fr;
+        height: 100vh;
+    }
+    .app-header {
+        grid-column: 1 / -1;
+        background-color: #1A1E25;
+        border-bottom: 1px solid #2a2e37;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2rem;
+    }
+    .header-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+        background-color: #42d8a4;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #12151A;
+        font-size: 1.2rem;
+    }
+    .logo-text {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #FFFFFF;
+    }
+    .header-nav {
+        display: flex;
+        gap: 2rem;
+    }
+    .header-nav a {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #A0A0A0;
+        transition: color 0.2s;
+    }
+    .header-nav a.active,
+    .header-nav a:hover { color: #FFFFFF; }
+    .header-profile {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    .btn-join {
+        background-color: #42d8a4;
+        color: #12151A;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        transition: background-color 0.2s;
+    }
+    .btn-join:hover { background-color: #52eec2; }
+    .profile-pic {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #3A404C;
+    }
+    .filter-sidebar {
+        grid-row: 2 / -1;
+        background-color: #1A1E25;
+        border-right: 1px solid #2a2e37;
+        padding: 2rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        overflow-y: auto;
+    }
+    .filter-group { width: 100%; }
+    .filter-group h3 {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #A0A0A0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 1rem;
+    }
+    .filter-option {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: none;
+        border-radius: 8px;
+        background-color: transparent;
+        color: #C0C0C0;
+        font-size: 0.95rem;
+        font-weight: 500;
+        text-align: left;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .filter-option.active,
+    .filter-option:hover {
+        background-color: #2C323C;
+        color: #FFFFFF;
+    }
+    .main-content {
+        grid-column: 2 / -1;
+        grid-row: 2 / -1;
+        padding: 2.5rem;
+        overflow-y: auto;
+    }
+    .search-header { margin-bottom: 1.5rem; }
+    .search-header h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin-bottom: 0.5rem;
+    }
+    .search-header p {
+        font-size: 0.95rem;
+        color: #A0A0A0;
+        margin-bottom: 1.5rem;
+    }
+    .search-bar {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap; /* Allow buttons to wrap on mobile */
+    }
+    .search-input {
+        flex-grow: 1;
+        min-width: 200px;
+        padding: 0.85rem 1rem;
+        background-color: #2C323C;
+        border: 1px solid #3A404C;
+        border-radius: 8px;
+        color: #FFFFFF;
+        font-size: 1rem;
+        font-family: 'Inter', sans-serif;
+    }
+    .search-input::placeholder { color: #707070; }
+    .search-btn {
+        padding: 0.85rem 1.25rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .btn-filter {
+        background-color: #2C323C;
+        color: #E6E6E6;
+    }
+    .btn-filter:hover { background-color: #3A404C; }
+    .btn-search {
+        background-color: #42d8a4;
+        color: #12151A;
+    }
+    .btn-search:hover { background-color: #52eec2; }
+    .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2rem 0 1.5rem 0;
+    }
+    .results-header span {
+        font-size: 0.9rem;
+        color: #A0A0A0;
+    }
+    .results-header .btn-reset {
+        font-size: 0.9rem;
+        color: #A0A0A0;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+    .results-header .btn-reset:hover { color: #FFFFFF; }
+    .song-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .song-row {
+        display: grid;
+        /* Adjusted grid for responsiveness */
+        grid-template-columns: 3fr 1fr 1fr 80px;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        transition: background-color 0.2s;
+    }
+    .song-row:hover { background-color: #1A1E25; }
+    .song-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        min-width: 0; /* Allow text to truncate */
+    }
+    .song-album-art {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        background-color: #2C323C;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+    .song-details {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+    .song-title {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #FFFFFF;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .song-artist {
+        font-size: 0.875rem;
+        color: #A0A0A0;
+    }
+    .song-tag span {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #A0A0A0;
+        background-color: #2C323C;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+    }
+    .song-likes {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #A0A0A0;
+    }
+    .song-controls {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 1rem;
+    }
+    .like-button {
+        background: none;
+        border: none;
+        color: #A0A0A0;
+        font-size: 1.25rem;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .like-button:hover { color: #FFFFFF; }
+
+    /* --- Responsive Design --- */
+    @media (max-width: 768px) {
+        .app-container {
+            grid-template-columns: 1fr; /* Single column */
+        }
+        .filter-sidebar {
+            display: none; /* Hide sidebar */
+        }
+        .main-content {
+            grid-column: 1 / -1;
+            padding: 1.5rem;
+        }
+        .app-header {
+            padding: 0 1rem;
+        }
+        .header-nav, .btn-join {
+            display: none; /* Hide nav and join button */
+        }
+        .header-profile {
+            gap: 1rem;
+        }
+        .song-row {
+            /* Stack columns on mobile */
+            grid-template-columns: 1fr 80px;
+            gap: 0.5rem;
+        }
+        .song-tag, .song-likes {
+            display: none; /* Hide tag and likes on small screens */
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+        <div class="header-logo">
+            <span class="logo-icon">E</span>
+            <span class="logo-text">EchoVerse</span>
+        </div>
+        <nav class="header-nav">
+            <a href="playlist.html">Home</a>
+            <a href="#">Browse</a>
+            <a href="#">My Library</a>
+            <a href="upload.html">Upload</a> 
+        </nav>
+        <div class="header-profile">
+            <a href="#" class="btn-join">Join & start earning</a>
+            <span id="user-welcome" style="color: #A0A0A0; font-size: 0.9rem;"></span>
+            <div class="profile-pic"></div>
+        </div>
+    </header>
+    <aside class="filter-sidebar">
+        <div class="filter-group">
+            <h3>Filters</h3>
+            <button class="filter-option active">Songs</button>
+            <button class="filter-option">Artists</button>
+            <button class="filter-option">Playlists</button>
+        </div>
+        <div class="filter-group">
+            <h3>Duration</h3>
+            <button class="filter-option">Under 3 min</button>
+            <button class="filter-option">3 - 5 min</button>
+            <button class="filter-option">Over 5 min</button>
+        </div>
+        <div class="filter-group">
+            <h3>Sort by</h3>
+            <button class="filter-option active">Most liked</button>
+            <button class="filter-option">Newest</button>
+            <button class="filter-option">Trending</button>
+        </div>
+    </aside>
+    <main class="main-content">
+        <section class="search-header">
+            <h2>Search songs</h2>
+            <p>Find tracks, artists, and user uploads. Earn likes as you explore.</p>
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Search by song, artist, or tag">
+                <button class="search-btn btn-filter">Tags</button>
+                <button class="search-btn btn-filter">Artists</button>
+                <button class="search-btn btn-filter">Recent</button>
+                <button class="search-btn btn-search">Search</button>
+            </div>
+        </section>
+        <section class="song-list-container">
+            <div class="results-header">
+                <span id="results-count">Showing 0 results</span>
+                <div>
+                    <span style="color: #A0A0A0; font-size: 0.9rem; margin-right: 0.5rem;">Sort by:</span>
+                    <button class="btn-reset">Relevance</button>
+                    <button class="btn-reset" style="margin-left: 1rem;">Reset</button>
+                </div>
+            </div>
+            <div id="songsList" class="song-list">
+                </div>
+        </section>
+    </main>
+  </div>
+ <script>
+    const username = localStorage.getItem("username");
+    if (username) {
+        document.getElementById("user-welcome").innerText = `Welcome, ${username}`;
+    }
+    async function loadSongs() {
+      const res = await fetch("http://localhost:5000/api/uploads");
+      const songs = await res.json();
+      const div = document.getElementById("songsList");
+      div.innerHTML = "";
+      document.getElementById("results-count").innerText = `Showing ${songs.length} results`;
+
+      songs.forEach(song => {
+        const songArtist = song.artist || "Unknown Artist"; 
+        const songTag = song.tag || "#unknown";
+        const albumArtUrl = song.albumArtUrl || "placeholder-art.png";
+        const songRowHTML = `
+            <div class="song-row">
+                <div class="song-info">
+                    <img src="${albumArtUrl}" alt="Album Art" class="song-album-art">
+                    <div class="song-details">
+                        <span class="song-title">${song.title}</span>
+                        <span class="song-artist">${songArtist} • User Upload</span>
+                    </div>
+                </div>
+                <div class="song-tag">
+                    <span>${songTag}</span>
+                </div>
+                <div class="song-likes">
+                    <span>${song.likes}</span>
+                </div>
+                <div class="song-controls">
+                    <button class="like-button" onclick="playAudio('http://localhost:5000${song.fileUrl}')">▶</button>
+                    <button class="like-button" onclick="likeSong('${song._id}')">❤️</button>
+                </div>
+            </div>
+        `;
+        div.innerHTML += songRowHTML;
+      });
+    }
+
+    async function likeSong(id) {
+        try {
+            await fetch(`http://localhost:5000/api/uploads/${id}/like`, { method: "PUT" });
+            loadSongs();
+        } catch (err) {
+            console.error("Failed to like song:", err);
+            alert("Failed to like song.");
+        }
+    }
+
+    let globalAudioPlayer = null;
+    function playAudio(songUrl) {
+        if (!globalAudioPlayer) {
+            globalAudioPlayer = new Audio();
+            globalAudioPlayer.controls = true;
+            document.body.appendChild(globalAudioPlayer);
+            globalAudioPlayer.style.position = 'fixed';
+            globalAudioPlayer.style.bottom = '0';
+            globalAudioPlayer.style.width = '100%';
+            globalAudioPlayer.style.zIndex = '100';
+            globalAudioPlayer.style.background = '#1A1E25';
+            globalAudioPlayer.style.borderTop = '1p solid #2a2e37';
+        }
+        globalAudioPlayer.src = songUrl;
+        globalAudioPlayer.play();
+    }
+    loadSongs();
+  </script>
+</body>
+</html>
